@@ -17,26 +17,34 @@ class PracticeHubClient:
     HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
 # List Posts
-posts = requests.get(
-    f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
-    headers=PracticeHubClient.HEADERS,
-    ).json()
+class List:
+    posts = requests.get(
+        f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+        headers=PracticeHubClient.HEADERS,
+        ).json()
 
-my_posts = requests.get(
-    f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
-    headers=PracticeHubClient.HEADERS,
-    params={"mine": True},
-    ).json()
+    myPosts = requests.get(
+        f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+        headers=PracticeHubClient.HEADERS,
+        params={"mine": True},
+        ).json()
+
+    idPost = requests.get(
+        f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{id}", 
+        headers=PracticeHubClient.HEADERS
+        ).json()
 
 # Create A Post (Requirement #4)
-new_post = requests.post(f"{PracticeHubClient.ENDPOINT}/api/v1/posts", headers=PracticeHubClient.HEADERS, json={
-    "title": "My Post",
-    "body": "Hello world",
-    "tags": ["python"],
-    }).json()
-post_id = new_post["id"]
+class Create:
+    new_post = requests.post(f"{PracticeHubClient.ENDPOINT}/api/v1/posts", headers=PracticeHubClient.HEADERS, json={
+        "title": "My Post",
+        "body": "Hello world",
+        "tags": ["python"],
+        }).json()
+    post_id = new_post["id"]
 
-print(posts)
+
+print(List.posts)
 
 # Who am I?
 #print(requests.get(f"{BASE}/api/v1/me", headers=headers).json())
