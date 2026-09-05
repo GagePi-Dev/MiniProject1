@@ -1,11 +1,12 @@
 # INF601 - Advanced Programming in Python
-# Your Name
+# Gage Giffin
 # Mini Project 1
 
 # Imports (Requirement #2)
 import os
 import requests
 from dotenv import load_dotenv
+from time import sleep
 
 # Load API Token
 load_dotenv()  # reads FHSU_API_TOKEN from the .env file
@@ -18,7 +19,7 @@ class PracticeHubClient:
 
 # Create A Post (Requirement #4)
 class Create:
-    def newPost(self, title, body, tags):
+    def post(self, title, body, tags):
         return requests.post(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
             headers=PracticeHubClient.HEADERS,
@@ -52,7 +53,7 @@ class List:
 
 # Edit A Post (Requirement #6)
 class Edit:
-    def edit(self, post_id):
+    def post(self, post_id):
         resp = requests.patch(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
@@ -68,6 +69,27 @@ class Delete:
             )
         return resp.status_code
 
-# Only the calls below actually hit the API
+# Only the calls below actually hit the API (Requirement #9)
 if __name__ == "__main__":
+    print("\n\nPosts BEFORE Script\n---------------")
     print(List().myPosts())
+
+    print("\n\nCreate A Post\n---------------")
+    newPost = Create().post("My Post Cycle", "Hello From My Python Script", ["python"])
+    newPostId = newPost["id"]
+    print(List().idPost(newPostId))
+    print("\nYou have 30 seconds to view on https://practice.fhsucyber.com/ before continuing.")
+    sleep(30)
+
+    print("\n\nEdit A Post\n---------------")
+    Edit().post(newPostId)
+    print(List().idPost(newPostId))
+    print("\nYou have 30 seconds to view on https://practice.fhsucyber.com/ before continuing.")
+    sleep(30)
+
+    print("\n\nDelete A Post\n---------------")
+    status = Delete().post(newPostId)
+    if status == 204:
+        print("Delete was successful.")
+    else:
+        print(f"Error: Code {status}")
