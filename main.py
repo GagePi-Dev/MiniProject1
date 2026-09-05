@@ -17,10 +17,16 @@ class PracticeHubClient:
     TOKEN = os.environ.get("FHSU_API_TOKEN")
     HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
+# Error Handling
+def check(resp):
+    if not resp.ok:
+        raise SystemExit(f"Error {resp.status_code}: {resp.json()['detail']}")
+    return resp
+
 # Create A Post (Requirement #4)
 class Create:
     def post(self, title, body, tags):
-        return requests.post(
+        return check(requests.post(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
             headers=PracticeHubClient.HEADERS,
             json={
@@ -28,45 +34,45 @@ class Create:
                 "body": body,
                 "tags": tags,
                 },
-            ).json()
+            )).json()
 
 # List Posts (Requirement #5)
 class List:
     def posts(self):
-        return requests.get(
+        return check(requests.get(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
             headers=PracticeHubClient.HEADERS,
-            ).json()
+            )).json()
 
     def myPosts(self):
-        return requests.get(
+        return check(requests.get(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
             headers=PracticeHubClient.HEADERS,
             params={"mine": True},
-            ).json()
+            )).json()
 
     def idPost(self, post_id):
-        return requests.get(
+        return check(requests.get(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
-            ).json()
+            )).json()
 
 # Edit A Post (Requirement #6)
 class Edit:
     def post(self, post_id):
-        resp = requests.patch(
+        return check(requests.patch(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
             json={"title": "My Post (edited)"},
-            ).json()
+            )).json()
 
 # Delete A Post (Requirement #7)
 class Delete:
     def post(self, post_id):
-        resp = requests.delete(
+        resp = check(requests.delete(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
-            )
+            ))
         return resp.status_code
 
 # Only the calls below actually hit the API (Requirement #9)
