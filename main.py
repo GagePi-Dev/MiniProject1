@@ -16,7 +16,20 @@ class PracticeHubClient:
     TOKEN = os.environ.get("FHSU_API_TOKEN")
     HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
-# List Posts
+# Create A Post (Requirement #4)
+class Create:
+    def newPost(self, title, body, tags):
+        return requests.post(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+            headers=PracticeHubClient.HEADERS,
+            json={
+                "title": title,
+                "body": body,
+                "tags": tags,
+                },
+            ).json()
+
+# List Posts (Requirement #5)
 class List:
     def posts(self):
         return requests.get(
@@ -37,20 +50,15 @@ class List:
             headers=PracticeHubClient.HEADERS,
             ).json()
 
-# Create A Post (Requirement #4)
-class Create:
-    def newPost(self, title, body, tags):
-        return requests.post(
-            f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+class Edit:
+    def edit(self, post_id)
+        resp = requests.patch(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
-            json={
-                "title": title,
-                "body": body,
-                "tags": tags,
-                },
+            json={"title": "My Post (edited)"},
             ).json()
 
-# Delete A Post
+# Delete A Post (Requirement #7)
 class Delete:
     def post(self, post_id):
         resp = requests.delete(
@@ -61,5 +69,4 @@ class Delete:
 
 # Only the calls below actually hit the API
 if __name__ == "__main__":
-    lister = List()
-    print(lister.myPosts())
+    print(List().myPosts())
