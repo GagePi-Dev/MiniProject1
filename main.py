@@ -18,40 +18,48 @@ class PracticeHubClient:
 
 # List Posts
 class List:
-    posts = requests.get(
-        f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
-        headers=PracticeHubClient.HEADERS,
-        ).json()
+    def posts(self):
+        return requests.get(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+            headers=PracticeHubClient.HEADERS,
+            ).json()
 
-    myPosts = requests.get(
-        f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
-        headers=PracticeHubClient.HEADERS,
-        params={"mine": True},
-        ).json()
+    def myPosts(self):
+        return requests.get(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+            headers=PracticeHubClient.HEADERS,
+            params={"mine": True},
+            ).json()
 
-    idPost = requests.get(
-        f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{id}", 
-        headers=PracticeHubClient.HEADERS
-        ).json()
+    def idPost(self, post_id):
+        return requests.get(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
+            headers=PracticeHubClient.HEADERS,
+            ).json()
 
 # Create A Post (Requirement #4)
 class Create:
-    new_post = requests.post(f"{PracticeHubClient.ENDPOINT}/api/v1/posts", headers=PracticeHubClient.HEADERS, json={
-        "title": "My Post",
-        "body": "Hello world",
-        "tags": ["python"],
-        }).json()
-    post_id = new_post["id"]
+    def newPost(self, title, body, tags):
+        return requests.post(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts",
+            headers=PracticeHubClient.HEADERS,
+            json={
+                "title": title,
+                "body": body,
+                "tags": tags,
+                },
+            ).json()
 
+# Delete A Post
+class Delete:
+    def post(self, post_id):
+        resp = requests.delete(
+            f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
+            headers=PracticeHubClient.HEADERS,
+            )
+        return resp.status_code
 
-print(List.posts)
-
-# Who am I?
-#print(requests.get(f"{BASE}/api/v1/me", headers=headers).json())
-
-# Read recent posts
-#print(requests.get(f"{BASE}/api/v1/posts", headers=headers).json())
-
-# Generate some practice data (no public API needed)
-#print(requests.get(f"{BASE}/api/v1/datasets/people",
-#                   headers=headers, params={"count": 5}).json())
+# Only the calls below actually hit the API
+if __name__ == "__main__":
+    lister = List()
+    print(lister.myPosts())
