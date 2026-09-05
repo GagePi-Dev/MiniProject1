@@ -50,8 +50,9 @@ class List:
             headers=PracticeHubClient.HEADERS,
             ).json()
 
+# Edit A Post (Requirement #6)
 class Edit:
-    def edit(self, post_id)
+    def edit(self, post_id):
         resp = requests.patch(
             f"{PracticeHubClient.ENDPOINT}/api/v1/posts/{post_id}",
             headers=PracticeHubClient.HEADERS,
