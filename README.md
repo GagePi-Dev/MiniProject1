@@ -1,8 +1,7 @@
 # INF 601 - Mini Project 1
 
 A small Python client for the FHSU PracticeHub API. It authenticates with a bearer
-token and wraps the posts endpoints (list, list-mine, get-by-id, create, edit,
-delete) in classes.
+token and wraps the posts endpoints (list, create, edit, delete) in classes.
 
 ## Setup
 
@@ -33,19 +32,15 @@ the API until you call it. To exercise a different endpoint, change the calls un
 `if __name__ == "__main__":`
 
 ```python
-lister = List()
-print(lister.posts())        # all recent posts
-print(lister.myPosts())      # only your posts
-print(lister.idPost(20))     # a single post by id
+print(List().posts())        # all recent posts
+print(List().myPosts())      # only your posts
+print(List().idPost(20))     # a single post by id
 
-creator = Create()
-print(creator.post("My Post", "Hello world", ["python"]))
+print(Create().post("My Post", "Hello world", ["python"]))
 
-editor = Edit()
-print(editor.post(20))       # retitles post 20, returns the updated post
+print(Edit().post(20))       # retitles post 20, returns the updated post
 
-deleter = Delete()
-print(deleter.post(20))      # returns the HTTP status code
+print(Delete().post(20))     # returns the HTTP status code
 ```
 
 ## Structure
@@ -61,8 +56,28 @@ print(deleter.post(20))      # returns the HTTP status code
 
 ## AI Usage
 
+### What I used Claude Code for
+
+Claude Code (Opus 5) wrote the error handling for this project: the `check()` helper
+and the wrapping of each request in it. It also edited some of my existing functions
+so they would work with that error handling. It also assisted with method handling, which is
+documented in the git commit history.
+Claude Code was also responsibe for the README file and more of the documentation. 
+
 | Date | Tool | What it did |
 | --- | --- | --- |
 | 2026-09-05 | Claude Code (Opus 5) | Converted `List`, `Create`, and `Delete` from class attributes to methods; added parameters and a `__main__` guard. |
 | 2026-09-05 | Claude Code (Opus 5) | Wrote base README. |
-| 2026-09-05 | Claude Code (Opus 5) | Added the `check()` helper and wrapped each request in it. Implimented core error handling. |
+| 2026-09-05 | Claude Code (Opus 5) | Added the `check()` helper and wrapped each request in it. Implemented core error handling. |
+
+### What I wrote myself
+
+I wrote the majority of the API functions manually, based primarily on the Practice
+Hub API documentation, along with calls under the `__main__` script portion that runs the
+create / read / update / delete demo. I also wrote the PracticeHubClient class which was based off of the Week 2 example. 
+
+### What I changed in AI-generated code
+
+Most of the edits I made to the AI-written code were renaming variables and adjusting
+it to be compatible with my `PracticeHubClient` class.
+I also did some edits and additions to the README after Claude Code wrote the base. 
