@@ -20,7 +20,10 @@ class PracticeHubClient:
 # Error Handling
 def check(resp):
     if not resp.ok:
-        raise SystemExit(f"Error {resp.status_code}: {resp.json()['detail']}")
+        detail = resp.json()["detail"]
+        if isinstance(detail, list):
+            detail = detail[0]["msg"]  # 422 sends a list of validation errors
+        raise SystemExit(f"Error {resp.status_code}: {detail}")
     return resp
 
 # Create A Post (Requirement #4)
